@@ -79,7 +79,6 @@ int main() {
 	int res = 0;
 	int cd = 0;
 	int filesize = 0;
-	pid_t chpid;
 	const int backlog = 10;
 	struct sockaddr_in saddr;
 	struct sockaddr_in caddr;
