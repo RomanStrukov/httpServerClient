@@ -47,7 +47,7 @@ void headers(int client, int size, int httpcode, char* content_type) {
 	send(client, buf, strlen(buf), 0);
 	strcpy(buf, "simple-server");
 	send(client, buf, strlen(buf), 0);
-	if(content_type != null)
+	if(content_type != NULL)
 	{
 	  sprintf(buf, "Content-Type:%s\r\n", content_type);
 	  send(client, buf, strlen(buf), 0);
