@@ -78,13 +78,14 @@ int main() {
 	int my_socket = 0;
 	int res = 0;
 	int cd = 0;
-	int filesize = 0;
+	int filesize = 0;	
 	const int backlog = 10;
 	struct sockaddr_in saddr;
 	struct sockaddr_in caddr;
 	char *line = NULL;
 	size_t len = 0;
 	char *filepath = NULL;
+	char buf[1024];
 	size_t filepath_len = 0;
 	int empty_str_count = 0;
 	socklen_t size_saddr;
@@ -137,7 +138,7 @@ int main() {
 			if (file == NULL) 
 			{
 				printf("404 File Not Found \n");
-				headers(cd, 0, 404);
+				headers(cd, 0, 404, NULL);
 			}
 			else 
 			{
@@ -154,20 +155,26 @@ int main() {
 					}
 					i++;
 				}
-			if (content_type != 0) {
+			if (content_type != 0) 
+			{
 				fseek(file, 0L, SEEK_END);
 				filesize = ftell(file);
 				fseek(file, 0L, SEEK_SET);
-				headers(cd, filesize, 200, content_type);
-				while (getline(&line, &len, file) != -1) 
+				headers(cd, filesize, 200, content_type); 
+
+				size_t nbytes = 0;
+
+				while ((nbytes = fread(buf, 1, 1024, file)) > 0) 
 				{
-					res = send(cd, line, len, 0);
+					res = send(cd, buf, nbytes, 0);
 					if (res == -1) 
 					{
 						printf("send error \n");
 					}
 				}
-			}
+
+				free(content_type);
+			}			
 		}				
 	}
 	close(cd);
