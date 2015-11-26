@@ -1,3 +1,6 @@
+// example: 
+// ./fileName hostName port
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -39,29 +42,29 @@ int main(int argc, char *argv[])
 	{
         fprintf(stderr,"ERROR, no such host\n");
         exit(0);
-    }
-	saddr = (char *)malloc(sizeof(saddr)); //?
-    //bzero((char *) &saddr, sizeof(saddr));
+    }	
+    bzero((char *) &saddr, sizeof(saddr));
     saddr.sin_family = AF_INET;
 	saddr.sin_port = htons(port);
-    bcopy((char *)server->h_addr, 
-         (char *)&saddr.sin_addr.s_addr,
-         server->h_length);    
+    bcopy((char *)server -> h_addr, (char *)&saddr.sin_addr.s_addr, server -> h_length);    
 	
-	res = connect(my_socket, (struct sockaddr *) &saddr, sizeof(saddr);
+	res = connect(my_socket, (struct sockaddr *) &saddr, sizeof(saddr));
     if (res < 0) 
         error("ERROR connecting");
+		
     printf("Please enter the message: ");
-    bzero(buffer,256);
-    fgets(buffer,255,stdin);
-    n = write(my_socket,buffer,strlen(buffer));
+    bzero(buffer, 256);
+    fgets(buffer, 255, stdin);
+    n = write(my_socket, buffer, strlen(buffer));
     if (n < 0) 
          error("ERROR writing to socket");
-    bzero(buffer,256);
-    n = read(my_socket,buffer,255);
+		 
+    bzero(buffer, 256);
+    n = read(my_socket, buffer, 255);
     if (n < 0) 
          error("ERROR reading from socket");
-    printf("%s\n",buffer);
+    printf("%s\n", buffer);
+	
     close(my_socket);
     return 0;
 }
